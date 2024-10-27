@@ -15,17 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.http import HttpResponse
+from django.urls import path, include
 
-def projects(request):
-    return HttpResponse("hello world")
-
-def project(request, pk):
-    return HttpResponse("single project" + " " + str(pk))
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('projects/', projects, name="projects"),
-    path('project/<str:pk>', project, name="project")
+    path('', include('projects.urls'))
+
 ]
+
+urlpatterns  += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns  += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
