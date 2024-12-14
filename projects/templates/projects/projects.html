@@ -23,7 +23,6 @@
         </div>
       </div>
     </section>
-    <!-- Search Result: DevList -->
     <section class="projectsList">
       <div class="container">
         <div class="grid grid--three">
@@ -31,11 +30,20 @@
           <div class="column">
             <div class="card project">
               <a href="{% url 'project' project.id %}" class="project">
-                <img class="project__thumbnail" src="{{ project.featured_image.url }}" alt="project thumbnail" />
+                <img class="project__thumbnail" src="{{ project.imageURL }}" alt="project thumbnail" />
                 <div class="card__body">
                   <h3 class="project__title">{{ project.title }}</h3>
-                  <p><a class="project__author" href="{% url 'user-profile' project.owner.id %}">By {{ project.owner.name }}</a></p>
-                  <p class="project--rating">
+                  {% comment %} <p><a class="project__author" href="{% url 'user-profile' project.owner.id %}">By {{ project.owner.name }}</a></p>
+                  <p class="project--rating"> {% endcomment %}
+
+                    <p>
+                      {% if project.owner %}
+                        <a class="project__author" href="{% url 'user-profile' project.owner.id %}">By {{ project.owner.name }}</a>
+                      {% else %}
+                        <span class="project__author">By Unknown</span>
+                      {% endif %}
+                    </p>
+                    
                     <span style="font-weight: bold;">{{ project.vote_ratio }}%</span> Positive Feedback ({{ project.vote_total}}) Vote{{ project.vote_total|pluralize:"s"}}
                   </p>
                   

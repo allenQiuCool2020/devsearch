@@ -2,7 +2,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from .serializers import ProjectSerializer
-from projects.models import Project, Review
+from projects.models import Project, Review, Tag
+from django.http import JsonResponse
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -46,3 +47,12 @@ def projectVote(request, pk):
     serializer = ProjectSerializer(project, many=False)
     print('Data', data)
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+def removeTag(request):
+    tagId = request.data['tag']
+    projectId = request.data['project']
+    project = Project.objects.get(id=projectId)
+    tag = Tag.objects.get(id=tagId)
+    project.tags.remove(tag)
+    return JsonResponse({'message': 'Tag was deleted', 'project_id': projectId, 'tag_id': tagId})

@@ -4,11 +4,9 @@ from .models import Project, Tag
 
 def paginateProjects(request, projects, results):
     page = request.GET.get('page')
-    print('page', page)
     paginator = Paginator(projects, results)
     try:
         projects = paginator.page(page)
-        print('projects', projects)
     except PageNotAnInteger:
         page = 1
         projects = paginator.page(page)
